@@ -81,6 +81,9 @@ function initializeTimer() {
     const duration = 120; // Duration in seconds (1 minute)
     startCountdown(duration, floatingTimer);
 }
+//add a flag to check if the timer is already initialized
+let timerInitialized = false;
+
 function extractTime() {
     const elements = document.querySelectorAll('.flex.items-center.gap-6');
     let extractedTime = null;
@@ -89,10 +92,12 @@ function extractTime() {
         const elementText = element.textContent;
         const timeRegex = /(\d{1,2}:\d{2} [APap][Mm])/;
         const timeMatch = elementText.match(timeRegex);
+        
         if (timeMatch) {
             // Add a clock emoji next to the detected time (only once)
             if (extractedTime === null) {
                 extractedTime = timeMatch[0] + 'Set Timer ⏰';
+                
             }
         }
     });
@@ -100,51 +105,48 @@ function extractTime() {
     return extractedTime;
 }
 
-// Function to initialize the MutationObserver
+//// Global flag to indicate if the clock emoji has been added
+let clockEmojiAdded = false;
+
+// Updated extractTime function
+function extractTime() {
+    const elements = document.querySelectorAll('.flex.items-center.gap-6');
+    for (const element of elements) {
+        const timeRegex = /(\d{1,2}:\d{2} [APap][Mm])/;
+        const timeMatch = element.textContent.match(timeRegex);
+        if (timeMatch) {
+            return timeMatch[0];
+        }
+    }
+    return null;
+}
+
+// Updated MutationObserver logic
 function initializeMutationObserver() {
-    // Create a MutationObserver
     const observer = new MutationObserver((mutationsList, observer) => {
         for (const mutation of mutationsList) {
             if (mutation.type === 'childList') {
-                // Check if the element with class "flex.items-center.gap-6" exists
-                const elements = document.querySelectorAll('.flex.items-center.gap-6');
-                if (elements.length > 0) {
-                    console.log('Found elements with class "flex.items-center.gap-6"');
-                    
-                    // Perform your actions here, e.g., extract the time
-                    const extractedTime = extractTime();
-                    console.log('Extracted Time:', extractedTime);
-
-                    // Create a clock emoji element and append it next to the detected time
+                const extractedTime = extractTime();
+                if (extractedTime && !clockEmojiAdded) {
+                    clockEmojiAdded = true;
+                    const elements = document.querySelectorAll('.flex.items-center.gap-6');
                     const clockEmoji = document.createElement('span');
-                    clockEmoji.textContent = 'Set Timer ⏰';
+                    clockEmoji.textContent = ' Set Timer ⏰';
                     elements[0].appendChild(clockEmoji);
 
-                    // Add a click event to the clock emoji to run the script
                     clockEmoji.addEventListener('click', function() {
                         initializeTimerWithFutureTime(extractedTime);
                     });
-
-                    // Stop observing once the timer is initialized
-                    observer.disconnect();
                 }
             }
         }
     });
 
-    // Define the target node to observe (the document body in this case)
     const targetNode = document.body;
-
-    // Configuration of the observer (observe changes to the child elements)
     const config = { childList: true, subtree: true };
-
-    // Start observing the target node
     observer.observe(targetNode, config);
 }
-// Function to be called when the target element is added or modified
-function handleElementChange(mutationsList, observer) {
-    // This function is intentionally left empty since we handle it in the MutationObserver
-}
 
-// Call initializeMutationObserver() to start observing for the element after the page loads completely
 window.addEventListener('load', initializeMutationObserver);
+
+//here
