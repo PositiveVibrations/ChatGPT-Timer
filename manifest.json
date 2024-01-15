@@ -3,12 +3,14 @@
     "name": "ChatGPT Timer",
     "version": "1.0",
     "description": "Set a timer to remind you when to use ChatGPT4.",
-    "permissions": ["alarms", "notifications"],
+    "permissions": ["alarms", "notifications", "storage", "activeTab"],
     "action": {
-      "default_popup": "popup.html"
+        "default_popup": "popup.html"
     },
-    "background": {
-      "service_worker": "background.js"
-    }
-  }
-  
+    "content_scripts": [
+        {
+            "matches": ["https://chat.openai.com/c/*"],
+            "js": ["contentScript.js"]
+        }
+    ]
+}

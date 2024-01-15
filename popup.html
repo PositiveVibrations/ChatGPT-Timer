@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>ChatGPT Timer</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div>
-    <input type="time" id="timeInput">
-    <button id="setTimer">Set Timer</button>
-  </div>
-  <div id="countdownDisplay"></div>
-  <div id="targetTimeDisplay"></div>
-  <script src="popup.js"></script>
+    <div class="container">
+        <h1>ChatGPT Timer</h1>
+        <div id="nextUseTime">Next use time: Not set</div>
+        <div id="countdown">Countdown: --:--:--</div>
+        <button id="setTimer">Set Timer</button>
+    </div>
+    <script src="popup.js"></script>
 </body>
 </html>
