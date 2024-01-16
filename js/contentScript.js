@@ -79,7 +79,7 @@ function startCountdown(duration, display) {
             display.textContent = 'ChatGPT 4 Ready';
             display.style.backgroundColor = 'green';
             startConfetti();
-            playAlarmSound();
+           
         }
     }, 1000);
 }
@@ -237,15 +237,7 @@ function startConfetti() {
     // Add click event listener to stop the confetti
     document.addEventListener('click', stopConfetti);
 }
-function playAlarmSound() {
-        var audio = new Audio(chrome.runtime.getURL('assets/rooster-alarm.wav'));
-        audio.addEventListener('error', function(e) {
-            console.error('Error playing sound:', e);
-        });
-        audio.addEventListener('canplaythrough', function() {
-            audio.play();
-        });
-    }
+
 window.addEventListener('load', initializeMutationObserver);
 
 //here
