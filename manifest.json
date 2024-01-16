@@ -8,7 +8,8 @@
         "notifications", 
         "storage", 
         "activeTab",
-        "scripting"
+        "scripting",
+        "tabs"
     ],
     "action": {
         "default_popup": "html/popup.html"
@@ -16,7 +17,7 @@
     "content_scripts": [
         {
             "matches": ["https://chat.openai.com/c/*"],
-            "js": ["js/confetti.js", "js/contentScript.js"]
+            "js": ["js/contentScript.js"]
         }
     ],
     "host_permissions": [

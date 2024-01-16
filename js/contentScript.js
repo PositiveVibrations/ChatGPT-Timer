@@ -1,3 +1,5 @@
+var clockEmojiAdded = false; //
+
 // Calculates the remaining time until the specified future time
 function calculateTimeRemaining(endTime) {
     const now = new Date();
@@ -76,9 +78,8 @@ function startCountdown(duration, display) {
             clearInterval(countdown);
             display.textContent = 'ChatGPT 4 Ready';
             display.style.backgroundColor = 'green';
+            startConfetti();
             playAlarmSound();
-            triggerConfetti();
-            
         }
     }, 1000);
 }
@@ -140,18 +141,111 @@ window.addEventListener('load', function() {
     observer.observe(targetNode, config);
 }
 
-//play sound and trigger confetti
+// Confetti Particle Class
+class ConfettiParticle {
+    constructor(ctx, width, height) {
+        this.ctx = ctx;
+        this.width = width;
+        this.height = height;
+        this.color = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, ${Math.random()})`;
+        this.lightness = 50;
+        this.diameter = Math.random() * 10 + 5;
+        this.tilt = Math.random() * 10 - 10;
+        this.tiltAngleIncremental = Math.random() * 0.07 + 0.05;
+        this.tiltAngle = 0;
+
+        this.x = Math.random() * width;
+        this.y = Math.random() * height - height;
+        this.verticalSpeed = Math.random() * 3 + 3;
+        this.horizontalSpeed = Math.random() * 0.5 - 0.25;
+    }
+
+    update() {
+        this.wobble();
+        this.y += this.verticalSpeed;
+        this.tiltAngle += this.tiltAngleIncremental;
+        this.x += this.horizontalSpeed;
+
+        if (this.isOutOfBound()) {
+            this.reset();
+        }
+    }
+
+    wobble() {
+        this.tilt = Math.sin(this.tiltAngle) * 12;
+    }
+
+    isOutOfBound() {
+        return (this.y > this.height + 20 || this.x < -20 || this.x > this.width + 20);
+    }
+
+    reset() {
+        this.x = Math.random() * this.width;
+        this.y = Math.random() * this.height - this.height;
+        this.tilt = Math.random() * 10 - 10;
+    }
+
+    draw() {
+        this.ctx.beginPath();
+        this.ctx.lineWidth = this.diameter;
+        this.ctx.strokeStyle = this.color;
+        this.ctx.moveTo(this.x + this.tilt + this.diameter / 2, this.y);
+        this.ctx.lineTo(this.x + this.tilt, this.y + this.tilt + this.diameter / 2);
+        this.ctx.stroke();
+    }
+}
+
+function startConfetti() {
+    const canvas = document.createElement('canvas');
+    document.body.appendChild(canvas);
+    canvas.style.position = 'fixed';
+    canvas.style.top = 0;
+    canvas.style.left = 0;
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = 9999;
+
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width = window.innerWidth;
+    const height = canvas.height = window.innerHeight;
+    const particles = Array.from({ length: 150 }).map(() => new ConfettiParticle(ctx, width, height));
+
+    let animationId = null;
+
+    function update() {
+        ctx.clearRect(0, 0, width, height);
+
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+
+        animationId = requestAnimationFrame(update);
+    }
+
+    function stopConfetti() {
+        cancelAnimationFrame(animationId);
+        canvas.remove();
+
+        // Remove the event listener after stopping confetti
+        document.removeEventListener('click', stopConfetti);
+    }
+
+    update();
+
+    // Add click event listener to stop the confetti
+    document.addEventListener('click', stopConfetti);
+}
 function playAlarmSound() {
-    var audio = new Audio(chrome.runtime.getURL('assets/rooster-alarm.wav'));
-    audio.play();
-}
-function triggerConfetti() {
-    confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-    });
-}
+        var audio = new Audio(chrome.runtime.getURL('assets/rooster-alarm.wav'));
+        audio.addEventListener('error', function(e) {
+            console.error('Error playing sound:', e);
+        });
+        audio.addEventListener('canplaythrough', function() {
+            audio.play();
+        });
+    }
 window.addEventListener('load', initializeMutationObserver);
 
 //here
