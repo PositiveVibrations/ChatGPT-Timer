@@ -35,7 +35,7 @@ Contributions to ChatGPT Timer are welcome! Please read our [contributing guidel
 This project is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgments
-- Special thanks to everyone who contributed to making this project possible.
+- Special thanks to everyone who contributed to making this project possible. (Me) 
 
 ## Contact
 For any queries or suggestions, please feel free to [contact us](mailto:your.email@example.com).
