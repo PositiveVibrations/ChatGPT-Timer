@@ -38,7 +38,7 @@ This project is licensed under the [MIT License](LICENSE).
 - Special thanks to everyone who contributed to making this project possible. (Me) 
 
 ## Contact
-For any queries or suggestions, please feel free to [contact us](mailto:your.email@example.com).
+For any queries or suggestions, please feel free to contact me.
 
 ## Version
 Current version: 1.0
