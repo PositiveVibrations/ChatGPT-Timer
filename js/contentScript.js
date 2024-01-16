@@ -78,6 +78,8 @@ function startCountdown(duration, display) {
             clearInterval(countdown);
             display.textContent = 'ChatGPT 4 Ready';
             display.style.backgroundColor = 'green';
+            
+            
             startConfetti();
            
         }
