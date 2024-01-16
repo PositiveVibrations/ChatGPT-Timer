@@ -26,10 +26,11 @@ To install the ChatGPT Timer Chrome Extension:
 
 ## Usage
 - Once your ChatGPT4 usage limit is reached, a red notification will appear on the ChatGPT site with the message "Set Timer ⏰".
-- Click on this notification to set up the timer. The red timer interface will appear with the countdown timer.
-- After setting the time, a countdown will begin. You can continue browsing or working, and the timer will run it the top of the page.
+- Click on this notification to set up the timer. The red countdown timer will appear with the remaining time.
+- You can continue browsing or working, and the timer will run it the top of the page.
 - When the timer ends, you will receive a notification. This feature helps you manage your time effectively on the ChatGPT site.
-- The timer is persistent and will not reset or stop even if the page is refreshed. It will only stop when you manually dismiss it.
+- The timer is persistent and will not reset or stop even if the page is refreshed or chat is switched.
+- It can be manually dismiss it by clicking on it.
 
 
 ## Contributing
