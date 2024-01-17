@@ -5,7 +5,7 @@
 ## About
 ChatGPT Timer is a Chrome extension designed to enhance your experience with ChatGPT by providing a handy timer feature. It allows users to set timers and get notified when it's time to use ChatGPT4, ensuring a more productive and organized interaction.
 ## Demo
-![Demo](assets/demo.gif)
+![Demo](assets/gptdemo.gif)
 
 ## Features
 - **Easy Timer Setting**: Set a timer with just a few clicks directly from the ChatGPT interface.
