@@ -37,6 +37,9 @@ Contributions to ChatGPT Timer are welcome! Please read our [contributing guidel
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
+## Disclaimer
+
+ChatGPT Timer Chrome Extension is an independent project developed to enhance the user experience of ChatGPT users. It is not officially affiliated with, authorized, endorsed by, or in any way officially connected with OpenAI, the creators of ChatGPT, or any of their subsidiaries or affiliates. The official OpenAI website can be found at https://www.openai.com.
 
 ## Acknowledgments
 - Special thanks to everyone who enjoys this project.
