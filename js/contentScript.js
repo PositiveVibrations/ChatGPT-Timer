@@ -85,6 +85,24 @@ function startCountdown(duration, display) {
         }
     }, 1000);
 }
+function findAndInitializeTimer() {
+    const extractedTime = extractTime();
+    if (extractedTime) {
+        initializeTimerWithFutureTime(extractedTime);
+        return true; // Timer found and initialized
+    }
+    return false; // No timer found
+}
+
+// Listening for messages from the popup
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if (request.action === "checkForTimer") {
+            const timerSet = findAndInitializeTimer();
+            sendResponse({timerFound: timerSet});
+        }
+    }
+);
 
 // Check if a timer should be started on page load
 window.addEventListener('load', function() {
@@ -197,6 +215,7 @@ class ConfettiParticle {
     }
 }
 
+
 function startConfetti() {
     const canvas = document.createElement('canvas');
     document.body.appendChild(canvas);
@@ -239,6 +258,7 @@ function startConfetti() {
     // Add click event listener to stop the confetti
     document.addEventListener('click', stopConfetti);
 }
+
 
 window.addEventListener('load', initializeMutationObserver);
 

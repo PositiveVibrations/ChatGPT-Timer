@@ -4,9 +4,9 @@
     "version": "1.0",
     "description": "Set a timer to remind you when to use ChatGPT4.",
     "permissions": [
-        "alarms", 
-        "notifications", 
-        "storage", 
+        "alarms",
+        "notifications",
+        "storage",
         "activeTab",
         "scripting",
         "tabs"
