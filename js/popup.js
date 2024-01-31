@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
+    loadSettings();
+
     // Initial check for an active timer
     chrome.storage.local.get('endTime', function(data) {
         if (data.endTime && new Date(data.endTime) > new Date()) {
@@ -15,14 +17,12 @@ document.addEventListener('DOMContentLoaded', function() {
     showTimerButton.addEventListener('click', function() {
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             if (tabs.length === 0 || !tabs[0].id) {
-                // No active tab found
                 displayNoTimerMessage(messageDisplay, 'No active tab found.');
                 return;
             }
 
             chrome.tabs.sendMessage(tabs[0].id, {action: "checkForTimer"}, function(response) {
                 if (chrome.runtime.lastError) {
-                    // Handle potential error when sending message
                     displayNoTimerMessage(messageDisplay, 'Error: ' + chrome.runtime.lastError.message);
                     return;
                 }
@@ -35,6 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    document.getElementById('soundSelect').addEventListener('change', saveSettings);
+    document.getElementById('confettiToggle').addEventListener('change', saveSettings);
 });
 
 function displayTimerSetMessage(element) {
@@ -50,7 +53,6 @@ function displayInitialNoTimerMessage() {
     noTimerMessage.textContent = 'No timers are currently set.';
 }
 
-
 function displayTimer(endTime) {
     const timerElement = document.createElement('div');
     timerElement.id = 'timerDisplay';
@@ -58,35 +60,37 @@ function displayTimer(endTime) {
     updateTimerDisplay(endTime, timerElement);
 }
 
-function updateTimerDisplay(endTime, element) {
-    const interval = setInterval(function() {
-        const now = new Date();
-        const remainingTime = calculateTimeRemaining(endTime);
-        if (remainingTime <= 0) {
-            clearInterval(interval);
-            element.textContent = 'Timer ended';
-            return;
+// ... (rest of your existing functions for timer display and calculation)
+
+// New functions for handling settings
+function saveSettings() {
+    const sound = document.getElementById('soundSelect').value;
+    const confettiEnabled = document.getElementById('confettiToggle').checked;
+
+    chrome.storage.local.set({ sound, confettiEnabled }, function() {
+        console.log('Settings saved');
+    });
+}
+
+function loadSettings() {
+    chrome.storage.local.get(['sound', 'confettiEnabled'], function(items) {
+        if (items.sound) {
+            document.getElementById('soundSelect').value = items.sound;
         }
-        element.textContent = formatTime(remainingTime);
-    }, 1000);
+        document.getElementById('confettiToggle').checked = items.confettiEnabled !== false;
+    });
 }
 
-function calculateTimeRemaining(endTime) {
-    const now = new Date();
-    const difference = endTime.getTime() - now.getTime();
-    return Math.max(difference, 0);
-}
+// Call this function when the timer ends
+function onTimerEnd() {
+    chrome.storage.local.get(['sound', 'confettiEnabled'], function(items) {
+        if (items.sound) {
+            const audio = new Audio('../assets/' + items.sound); // Update path
+            audio.play();
+        }
 
-function formatTime(milliseconds) {
-    let totalSeconds = Math.floor(milliseconds / 1000);
-    let hours = Math.floor(totalSeconds / 3600);
-    totalSeconds %= 3600;
-    let minutes = Math.floor(totalSeconds / 60);
-    let seconds = totalSeconds % 60;
-
-    hours = hours < 10 ? "0" + hours : hours;
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    seconds = seconds < 10 ? "0" + seconds : seconds;
-
-    return hours + ":" + minutes + ":" + seconds;
+        if (items.confettiEnabled) {
+            startConfetti();
+        }
+    });
 }

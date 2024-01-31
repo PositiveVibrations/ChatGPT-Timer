@@ -8,7 +8,21 @@
     <div class="container">
         <h1>ChatGPT Timer</h1>
         <button id="showTimerButton">Show Timer</button>
-        <div id="messageDisplay"></div> <!-- Container for the message -->
+        <div id="messageDisplay"></div>
+
+        <h2>Settings</h2>
+        <div>
+            <label for="soundSelect">Alarm Sound:</label>
+            <select id="soundSelect">
+                <option value="">No Sound</option>
+                <option value="rooster-alarm.wav">Rooster Alarm</option>
+                <option value="scifi-alarm.wav">Sci-Fi Alarm</option>
+            </select>
+        </div>
+        <div>
+            <label for="confettiToggle">Confetti:</label>
+            <input type="checkbox" id="confettiToggle" checked>
+        </div>
     </div>
     <script src="../js/popup.js"></script>
 </body>
